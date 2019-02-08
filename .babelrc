@@ -1,4 +1,16 @@
 {
   "presets": ["env", "react"],
-  "plugins": ["file-loader", "transform-class-properties", "babel-plugin-transform-object-rest-spread"]
+  "plugins": [
+    "transform-class-properties",
+    "babel-plugin-transform-object-rest-spread",
+    [
+      "file-loader",
+      {
+        "name": "[name].[ext]",
+        "extensions": ["png", "jpg", "jpeg", "gif", "svg"],
+        "publicPath": "/dist/",
+        "outputPath": "examples/dist/static",
+      }
+    ]
+  ]
 }

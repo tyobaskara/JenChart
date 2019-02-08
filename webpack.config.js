@@ -8,8 +8,8 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 module.exports = {
   entry: path.join(__dirname, 'examples/src/index.js'),
   output: {
-      path: path.join(__dirname, "examples/dist"),
-      filename: "bundle.js"
+    path: path.join(__dirname, 'examples/dist'),
+    filename: 'bundle.js'
   },
   module: {
     rules: [
@@ -21,10 +21,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.(png|jpg|jpeg|gif|svg)$/,
-        use: ['file-loader']
       }
     ]
   },
