@@ -45,5 +45,9 @@
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tyobaskara/JenChart.git"
   }
 }
