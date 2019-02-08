@@ -3,6 +3,22 @@
 Demo:
 https://tyobaskara.github.io/JenChart/
 
+# Data
+```
+[
+  {
+    label: 'Jan',
+    year: '2018',
+    value: {
+      income: 5000000,
+      spending: 2500000,
+      nett: 2500000
+    }
+  },
+  ...
+]
+```
+
 # Web - React js
 
 ```
