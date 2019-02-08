@@ -8,8 +8,8 @@
       {
         "name": "[name].[ext]",
         "extensions": ["png", "jpg", "jpeg", "gif", "svg"],
-        "publicPath": "/dist/",
-        "outputPath": "examples/dist/static",
+        "publicPath": "public",
+        "outputPath": "public",
       }
     ]
   ]
