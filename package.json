@@ -1,6 +1,6 @@
 {
   "name": "jenchart",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -15,14 +15,6 @@
   },
   "author": "Prasetya Aji Baskara",
   "license": "ISC",
-  "peerDependencies": {
-    "d3": "^5.8.2",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "react-native": "0.58.3",
-    "react-native-svg": "^9.2.3",
-    "svgs": "^4.0.0"
-  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
