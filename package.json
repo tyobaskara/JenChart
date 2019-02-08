@@ -1,7 +1,7 @@
 {
   "name": "jenchart",
-  "version": "1.0.2",
-  "description": "",
+  "version": "1.0.4",
+  "description": "JenChart react-native react SVG Chart",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -41,5 +41,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/tyobaskara/JenChart.git"
-  }
+  },
+  "keywords": ["JenChart", "react-native", " react", " SVG", "Chart"]
 }

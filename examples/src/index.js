@@ -1,10 +1,10 @@
-/***  examples/src/index.js ***/
 import React, { PureComponent } from 'react';
 import { render } from 'react-dom';
 import JenChart from '../../src';
 import data from './data';
 
 import './styles.css';
+import { jenChartWrapper, jeenChartWrapper, titleStyle } from './styles';
 
 export default class App extends PureComponent {
   state = {
@@ -34,22 +34,8 @@ export default class App extends PureComponent {
   render() {
     return (
       <div>
-        <div
-          ref={ref => (this.jenchart = ref)}
-          style={{
-            backgroundColor: '#f5f5f5',
-            borderWidth: 5,
-            borderStyle: 'solid',
-            borderColor: '#f5f5f5',
-            width: 320,
-            margin: 'auto'
-          }}
-        >
-          <h1
-            style={{ paddingTop: 25, paddingBottom: 25, textAlign: 'center' }}
-          >
-            JenChart Default
-          </h1>
+        <div ref={ref => (this.jenchart = ref)} style={jenChartWrapper}>
+          <h1 style={titleStyle}>JenChart Default</h1>
           {this.state.jenchartWidth && (
             <JenChart
               data={data.slice(0, 6)}
@@ -65,22 +51,8 @@ export default class App extends PureComponent {
           )}
         </div>
 
-        <div
-          ref={ref => (this.jeenchart = ref)}
-          style={{
-            backgroundColor: '#f5f5f5',
-            borderWidth: 5,
-            borderStyle: 'solid',
-            borderColor: '#f5f5f5',
-            width: 660,
-            margin: 'auto'
-          }}
-        >
-          <h1
-            style={{ paddingTop: 25, paddingBottom: 25, textAlign: 'center' }}
-          >
-            JenChart With Props
-          </h1>
+        <div ref={ref => (this.jeenchart = ref)} style={jeenChartWrapper}>
+          <h1 style={titleStyle}>JenChart With Props</h1>
           {this.state.jeenchartWidth && (
             <JenChart
               activeColor='green'
@@ -94,14 +66,15 @@ export default class App extends PureComponent {
               data={data}
               labelTopStyle={{
                 fill: 'red',
-                fontSize: '10',
+                fontSize: '13',
                 fontWeight: '600'
               }}
               labelBottomStyle={{
                 fill: 'orange',
-                fontSize: '10',
+                fontSize: '13',
                 fontWeight: '400'
               }}
+              labelBottomPosition={30}
               lineStyle={{
                 stroke: 'magenta',
                 strokeWidth: 3
@@ -112,7 +85,7 @@ export default class App extends PureComponent {
               svgStyles={{
                 backgroundColor: '#fff',
                 width: this.state.jeenchartWidth,
-                height: 400
+                height: 450
               }}
             />
           )}

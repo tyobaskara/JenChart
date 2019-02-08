@@ -125,24 +125,37 @@ export default class JenChart extends PureComponent {
     </G>
   );
 
-  _drawBottomLabels = (
-    index,
-    item,
-    x,
-    labelTopStyles,
-    labelBottomStyles,
-    GRAPH_MARGIN_VERTICAL
-  ) => {
-    const { activeColor } = this.props;
+  _drawBottomLabels = (index, item, x, GRAPH_MARGIN_VERTICAL) => {
+    const {
+      activeColor,
+      labelTopStyle,
+      labelBottomStyle,
+      labelBottomPosition
+    } = this.props;
+
     const labelActiveStyles = this._activeIndex(index) && {
       fill: activeColor ? activeColor : '#00a4de'
+    };
+    const labelTopStyles = {
+      fill: '#7d7d7d',
+      fontSize: '10',
+      fontWeight: '600',
+      ...labelTopStyle,
+      ...labelActiveStyles
+    };
+    const labelBottomStyles = {
+      fill: '#7d7d7d',
+      fontSize: '10',
+      fontWeight: '400',
+      ...labelBottomStyle,
+      ...labelActiveStyles
     };
     const triangleSize = 10;
 
     return (
       <G key={'label' + item.label}>
         <Text
-          style={{ ...labelTopStyles, ...labelActiveStyles }}
+          style={labelTopStyles}
           x={x(item.label) + 5}
           y='15'
           textAnchor='middle'
@@ -151,9 +164,9 @@ export default class JenChart extends PureComponent {
         </Text>
 
         <Text
-          style={{ ...labelBottomStyles, ...labelActiveStyles }}
+          style={labelBottomStyles}
           x={x(item.label) + 5}
-          y='25'
+          y={labelBottomPosition ? labelBottomPosition : 25}
           textAnchor='middle'
         >
           {item.year}
@@ -175,44 +188,68 @@ export default class JenChart extends PureComponent {
     );
   };
 
-  _drawBars = (item, GRAPH_BAR_WIDTH, barColors, x, y) => (
-    <G>
-      <Rect
-        x={x(item.label) - GRAPH_BAR_WIDTH / 2}
-        y={y(item.value.income) * -1}
-        rx={2.5}
-        width={GRAPH_BAR_WIDTH}
-        height={y(item.value.income)}
-        fill={barColors.barLeft}
-      />
-      <Rect
-        x={x(item.label) + 7}
-        y={y(item.value.spending) * -1}
-        rx={2.5}
-        width={GRAPH_BAR_WIDTH}
-        height={y(item.value.spending)}
-        fill={barColors.barRight}
-      />
-    </G>
-  );
+  _drawBars = (item, GRAPH_BAR_WIDTH, x, y) => {
+    const barColors = {
+      barLeft: '#8fbc5a',
+      barRight: '#fc9d13',
+      ...this.props.barColor
+    };
 
-  _drawCircle = (item, x, y, circleStyles) => (
-    <Circle
-      cx={x(item.label) + 5}
-      cy={y(item.value.nett) * -1}
-      {...circleStyles}
-    />
-  );
+    return (
+      <G>
+        <Rect
+          x={x(item.label) - GRAPH_BAR_WIDTH / 2}
+          y={y(item.value.income) * -1}
+          rx={2.5}
+          width={GRAPH_BAR_WIDTH}
+          height={y(item.value.income)}
+          fill={barColors.barLeft}
+        />
+        <Rect
+          x={x(item.label) + 7}
+          y={y(item.value.spending) * -1}
+          rx={2.5}
+          width={GRAPH_BAR_WIDTH}
+          height={y(item.value.spending)}
+          fill={barColors.barRight}
+        />
+      </G>
+    );
+  };
 
-  _drawLine = (x, y, index, array, lineStyles) => (
-    <Line
-      x1={x(array[index].label) + 5}
-      y1={y(array[index].value.nett) * -1}
-      x2={x(array[index + 1].label) + 5}
-      y2={y(array[index + 1].value.nett) * -1}
-      style={lineStyles}
-    />
-  );
+  _drawCircle = (item, x, y) => {
+    const circleStyles = {
+      r: '5',
+      fill: '#00a4de',
+      ...this.props.circleStyle
+    };
+
+    return (
+      <Circle
+        cx={x(item.label) + 5}
+        cy={y(item.value.nett) * -1}
+        {...circleStyles}
+      />
+    );
+  };
+
+  _drawLine = (x, y, index, array) => {
+    const lineStyles = {
+      stroke: '#00a4de',
+      strokeWidth: 3,
+      ...this.props.lineStyle
+    };
+
+    return (
+      <Line
+        x1={x(array[index].label) + 5}
+        y1={y(array[index].value.nett) * -1}
+        x2={x(array[index + 1].label) + 5}
+        y2={y(array[index + 1].value.nett) * -1}
+        style={lineStyles}
+      />
+    );
+  };
 
   _getMaxValue = data =>
     d3.max(data, d => {
@@ -238,7 +275,7 @@ export default class JenChart extends PureComponent {
     platform
   ) => {
     const propsOnpress = {};
-    
+
     if (platform !== 'web') {
       propsOnpress.onPress = () => this._rectOnPress(index, item);
     }
@@ -261,13 +298,9 @@ export default class JenChart extends PureComponent {
   render() {
     const {
       axisColor,
-      barColor,
       barWidth,
-      circleStyle,
       lineStyle,
       marginVertical,
-      labelTopStyle,
-      labelBottomStyle,
       platform,
       svgStyles
     } = this.props;
@@ -276,33 +309,6 @@ export default class JenChart extends PureComponent {
     const axisColors = {
       axis: '#f5f5f5',
       ...axisColor
-    };
-    const barColors = {
-      barLeft: '#8fbc5a',
-      barRight: '#fc9d13',
-      ...barColor
-    };
-    const circleStyles = {
-      r: '5',
-      fill: '#00a4de',
-      ...circleStyle
-    };
-    const labelTopStyles = {
-      fill: '#7d7d7d',
-      fontSize: '10',
-      fontWeight: '600',
-      ...labelTopStyle
-    };
-    const labelBottomStyles = {
-      fill: '#7d7d7d',
-      fontSize: '10',
-      fontWeight: '400',
-      ...labelBottomStyle
-    };
-    const lineStyles = {
-      stroke: '#00a4de',
-      strokeWidth: 3,
-      ...lineStyle
     };
 
     // Dimensions
@@ -350,21 +356,14 @@ export default class JenChart extends PureComponent {
           {this._drawBottomAxis(axisColors, graphWidth)}
 
           {data.map((item, index, array) =>
-            this._drawBottomLabels(
-              index,
-              item,
-              x,
-              labelTopStyles,
-              labelBottomStyles,
-              GRAPH_MARGIN_VERTICAL
-            )
+            this._drawBottomLabels(index, item, x, GRAPH_MARGIN_VERTICAL)
           )}
         </G>
 
         {data.map(item => (
           <G y={graphHeight + GRAPH_MARGIN_VERTICAL} key={'bar' + item.label}>
-            {this._drawBars(item, GRAPH_BAR_WIDTH, barColors, x, y)}
-            {this._drawCircle(item, x, y, circleStyles)}
+            {this._drawBars(item, GRAPH_BAR_WIDTH, x, y)}
+            {this._drawCircle(item, x, y)}
           </G>
         ))}
 
@@ -375,7 +374,7 @@ export default class JenChart extends PureComponent {
                 y={graphHeight + GRAPH_MARGIN_VERTICAL}
                 key={'line' + item.label}
               >
-                {this._drawLine(x, y, index, array, lineStyles)}
+                {this._drawLine(x, y, index, array)}
               </G>
             )
         )}
