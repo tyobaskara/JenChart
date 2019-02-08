@@ -8,7 +8,7 @@ https://tyobaskara.github.io/JenChart/
 ```
 import React, { PureComponent } from 'react';
 import { render } from 'react-dom';
-import JenChart from '../../src';
+import JenChart from 'jenchart';
 import data from './data';
 
 import './styles.css';
