@@ -1,0 +1,49 @@
+{
+  "name": "jenchart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development",
+    "transpile": "babel src -d dist --copy-files",
+    "prepublishOnly": "npm run transpile",
+    "gopublish": "npm publish",
+    "build": "webpack --mode production",
+    "deploy": "gh-pages -d examples/dist",
+    "publish-demo": "npm run build && npm run deploy"
+  },
+  "author": "Prasetya Aji Baskara",
+  "license": "ISC",
+  "peerDependencies": {
+    "d3": "^5.8.2",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-native": "0.58.3",
+    "react-native-svg": "^9.2.3",
+    "svgs": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-file-loader": "^1.1.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^2.1.0",
+    "d3": "^5.8.2",
+    "gh-pages": "^2.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-native": "0.58.3",
+    "react-native-svg": "^9.2.3",
+    "style-loader": "^0.23.1",
+    "svgs": "^4.0.0",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "presets": ["env", "react"],
+  "plugins": ["file-loader", "transform-class-properties", "babel-plugin-transform-object-rest-spread"]
+}
