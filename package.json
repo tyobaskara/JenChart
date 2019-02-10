@@ -45,10 +45,12 @@
     "url": "https://github.com/tyobaskara/JenChart.git"
   },
   "keywords": [
-    "JenChart",
+    "chart",
+    "jenchart",
     "react-native",
-    " react",
-    " SVG",
-    "Chart"
+    "react",
+    "svg",
+    "svgs",
+    "react-native-svg"
   ]
 }
