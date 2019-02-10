@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Svg, G, Line, Rect, Text, Circle, Image } from 'svgs';
 import * as d3 from 'd3';
 
@@ -417,4 +418,36 @@ export default class JenChart extends PureComponent {
       </Svg>
     );
   }
+}
+
+JenChart.defaultProps = {
+  activeColor: '',
+  activeIndex: '',
+  axisColor: '',
+  barColor: {},
+  circleStyle: {},
+  labelTopStyle: {},
+  labelBottomStyle: {},
+  labelBottomPosition: 0,
+  lineStyle: {},
+  marginVertical: 0,
+  onPress: () => {},
+  svgStyles: {}
+}
+
+JenChart.propTypes = {
+  activeColor: PropTypes.string,
+  activeIndex: PropTypes.string,
+  axisColor: PropTypes.string,
+  barColor: PropTypes.object,
+  circleStyle: PropTypes.object,
+  data: PropTypes.array.isRequired,
+  labelTopStyle: PropTypes.object,
+  labelBottomStyle: PropTypes.object,
+  labelBottomPosition: PropTypes.number,
+  lineStyle: PropTypes.object,
+  marginVertical: PropTypes.number,
+  onPress: PropTypes.func,
+  platform: PropTypes.string.isRequired,
+  svgStyles: PropTypes.object
 }
