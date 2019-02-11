@@ -39,9 +39,9 @@ export default class App extends PureComponent {
           {this.state.jenchartWidth && (
             <JenChart
               data={data.slice(0, 6)}
-              onPress={(index, item) => this._onPress(index, item)}
               activeIndex='3'
               platform='web'
+              onPress={(index, item) => this._onPress(index, item)}
               svgStyles={{
                 backgroundColor: '#fff',
                 width: this.state.jenchartWidth,
@@ -57,7 +57,9 @@ export default class App extends PureComponent {
             <JenChart
               activeColor='green'
               activeIndex='0'
-              axisColor='red'
+              axisColor='lightblue'
+              axisLabelColor='brown'
+              axisLabelSize='15'
               barColor={{ barLeft: 'green', barRight: 'blue' }}
               circleStyle={{
                 r: '5',

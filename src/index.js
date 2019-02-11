@@ -34,18 +34,21 @@ export default class JenChart extends PureComponent {
     }
   };
 
-  _axisLabel = (y, value) => (
+  _axisLabel = (y, value) => {
+    const { axisLabelColor, axisLabelSize } = this.props;
+
+    return (
     <Text
       x='5'
       textAnchor='start'
       y={y ? y(value) * -1 - 5 : -2}
-      fontSize={10}
-      fill='black'
+      fontSize={axisLabelSize ? axisLabelSize : 10 }
+      fill={axisLabelColor ? axisLabelColor : 'black'}
       fillOpacity={0.4}
     >
       {value ? this._formatAxisLabel(value) : 0}
     </Text>
-  );
+  )};
 
   _drawTopAxis = (axisColors, topValue, graphWidth, y) => (
     <G>
@@ -307,8 +310,7 @@ export default class JenChart extends PureComponent {
     const GRAPH_MARGIN_VERTICAL = marginVertical || 40;
     const GRAPH_BAR_WIDTH = barWidth || 10;
     const axisColors = {
-      axis: '#f5f5f5',
-      ...axisColor
+      axis: axisColor || '#f5f5f5'
     };
 
     // Dimensions
@@ -423,6 +425,8 @@ JenChart.defaultProps = {
   activeColor: '',
   activeIndex: '',
   axisColor: '',
+  axisLabelColor: '',
+  axisLabelSize: '',
   barColor: {},
   circleStyle: {},
   labelTopStyle: {},
@@ -432,21 +436,23 @@ JenChart.defaultProps = {
   marginVertical: 0,
   onPress: () => {},
   svgStyles: {}
-}
+};
 
 JenChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  platform: PropTypes.string.isRequired,
   activeColor: PropTypes.string,
   activeIndex: PropTypes.string,
   axisColor: PropTypes.string,
+  axisLabelColor: PropTypes.string,
+  axisLabelSize: PropTypes.string,
   barColor: PropTypes.object,
   circleStyle: PropTypes.object,
-  data: PropTypes.array.isRequired,
   labelTopStyle: PropTypes.object,
   labelBottomStyle: PropTypes.object,
   labelBottomPosition: PropTypes.number,
   lineStyle: PropTypes.object,
   marginVertical: PropTypes.number,
   onPress: PropTypes.func,
-  platform: PropTypes.string.isRequired,
   svgStyles: PropTypes.object
-}
+};
