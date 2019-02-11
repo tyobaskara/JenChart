@@ -1,13 +1,12 @@
 {
   "name": "jenchart",
-  "version": "1.0.13",
+  "version": "1.0.19",
   "description": "JenChart react-native react-native-svg svgs react SVG Chart",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development",
     "transpile": "babel src -d dist --copy-files",
-    "prepublishOnly": "npm run transpile",
     "gopublish": "npm publish",
     "build": "webpack --mode production",
     "deploy": "gh-pages -d examples/dist",

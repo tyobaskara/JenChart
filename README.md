@@ -1,9 +1,25 @@
 # JenChart
 
+``
+// react js
+npm i jenchart svgs d3
+``
+``
+// react native
+npm i jenchart svgs d3 react-native-svg
+``
+
 Demo:
 https://tyobaskara.github.io/JenChart/
 
-# Data
+## publish npm
+- BABEL_ENV=production yarn transpile
+- npm publish 
+
+## publish demo github pages
+- npm run publish-demo
+
+## Data
 ```
 [
   {
@@ -19,7 +35,7 @@ https://tyobaskara.github.io/JenChart/
 ]
 ```
 
-# Web - React js
+## Web - React js
 
 ```
 import React, { PureComponent } from 'react';
@@ -122,7 +138,7 @@ export default class App extends PureComponent {
 render(<App />, document.getElementById('root'));
 ```
 
-# Mobile - React Native
+## Mobile - React Native
 
 ```
 import React, { PureComponent } from 'react';
