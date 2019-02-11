@@ -1,14 +1,5 @@
 # JenChart
 
-``
-// react js
-npm i jenchart svgs d3
-``
-``
-// react native
-npm i jenchart svgs d3 react-native-svg
-``
-
 Demo:
 https://tyobaskara.github.io/JenChart/
 
