@@ -300,7 +300,6 @@ export default class JenChart extends PureComponent {
     const {
       axisColor,
       barWidth,
-      lineStyle,
       marginVertical,
       platform,
       svgStyles
