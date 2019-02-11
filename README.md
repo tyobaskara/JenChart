@@ -70,9 +70,9 @@ export default class App extends PureComponent {
           {this.state.jenchartWidth && (
             <JenChart
               data={data.slice(0, 6)}
-              onPress={(index, item) => this._onPress(index, item)}
               activeIndex='3'
               platform='web'
+              onPress={(index, item) => this._onPress(index, item)}
               svgStyles={{
                 backgroundColor: '#fff',
                 width: this.state.jenchartWidth,
@@ -88,7 +88,9 @@ export default class App extends PureComponent {
             <JenChart
               activeColor='green'
               activeIndex='0'
-              axisColor='red'
+              axisColor='lightblue'
+              axisLabelColor='brown'
+              axisLabelSize='15'
               barColor={{ barLeft: 'green', barRight: 'blue' }}
               circleStyle={{
                 r: '5',
@@ -133,13 +135,19 @@ render(<App />, document.getElementById('root'));
 
 ```
 import React, { PureComponent } from 'react';
-import { Dimensions, View, Text, Platform } from 'react-native';
+import { Dimensions, View, Text, Platform, ScrollView } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
 import data from './data';
+import {
+  AxisGeneration,
+  BarGeneration,
+  BarLine,
+  BarChart
+} from '../../components/BarChart';
 
-import { JenChart } from 'jenchart';
+import JenChart from 'jenchart';
 
 import styles from './styles';
 
@@ -150,7 +158,7 @@ export default class Chart extends PureComponent {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.section}>
           <Text style={styles.title}>JenChart Default</Text>
           <JenChart
@@ -166,44 +174,70 @@ export default class Chart extends PureComponent {
           />
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.title}>JenChart With Props</Text>
+        <Text style={styles.title}>JenChart With Props</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.sectionScroll}
+        >
           <JenChart
             activeColor='green'
             activeIndex='0'
-            axisColor='red'
+            axisColor='lightblue'
+            axisLabelColor='brown'
+            axisLabelSize='12'
             barColor={{ barLeft: 'green', barRight: 'blue' }}
             circleStyle={{
-            r: '5',
-            fill: 'red'
+              r: '5',
+              fill: 'red'
             }}
             data={data}
             labelTopStyle={{
-            fill: 'red',
-            fontSize: '13',
-            fontWeight: '600'
+              fill: 'red',
+              fontSize: '13',
+              fontWeight: '600'
             }}
             labelBottomStyle={{
-            fill: 'orange',
-            fontSize: '13',
-            fontWeight: '400'
+              fill: 'orange',
+              fontSize: '13',
+              fontWeight: '400'
             }}
             labelBottomPosition={30}
             lineStyle={{
-            stroke: 'magenta',
-            strokeWidth: 3
+              stroke: 'magenta',
+              strokeWidth: 3
             }}
             marginVertical={50}
             onPress={(index, item) => this._onPress(index, item)}
             platform={Platform.OS}
             svgStyles={{
               backgroundColor: '#fff',
-              width: width,
+              width: 700,
               height: 400
             }}
           />
+        </ScrollView>
+
+        <View style={styles.section}>
+          <Text style={styles.title}>BarChart</Text>
+          <BarChart data={data} round={100} unit='€' />
         </View>
-      </View>
+
+        <View style={styles.section}>
+          <Text style={styles.title}>Bar Generation</Text>
+          <BarGeneration data={data} />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.title}>BarLine</Text>
+          <BarLine />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.title}>Axis Generation</Text>
+          <AxisGeneration />
+        </View>
+      </ScrollView>
     );
   }
 }
