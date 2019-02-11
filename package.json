@@ -1,6 +1,6 @@
 {
   "name": "jenchart",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "JenChart react-native react SVG Chart",
   "main": "src/index.js",
   "scripts": {
