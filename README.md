@@ -29,6 +29,8 @@ https://tyobaskara.github.io/JenChart/
 ## Web - React js
 
 ```
+// examples/src/index.js
+
 import React, { PureComponent } from 'react';
 import { render } from 'react-dom';
 import JenChart from 'jenchart';
@@ -134,6 +136,8 @@ render(<App />, document.getElementById('root'));
 ## Mobile - React Native
 
 ```
+// https://github.com/tyobaskara/learn-react-native/tree/master/JenChart/chartExpo
+
 import React, { PureComponent } from 'react';
 import { Dimensions, View, Text, Platform, ScrollView } from 'react-native';
 
