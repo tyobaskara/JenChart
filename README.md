@@ -1,7 +1,10 @@
 # JenChart
 
-Demo:
+Demo Web:
 https://tyobaskara.github.io/JenChart/
+
+Demo Apps:
+https://expo.io/@tyobaskara/chartExpo
 
 ## Data
 ```
