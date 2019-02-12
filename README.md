@@ -3,13 +3,6 @@
 Demo:
 https://tyobaskara.github.io/JenChart/
 
-## publish npm
-- BABEL_ENV=production yarn transpile
-- npm publish 
-
-## publish demo github pages
-- npm run publish-demo
-
 ## Data
 ```
 [
