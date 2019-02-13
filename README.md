@@ -9,24 +9,18 @@ https://expo.io/@tyobaskara/chartExpo
 ## Usage
 
 Web :
-``
-npm i jenchart
-``
+- npm i jenchart
 
 React Native without expo:
-``
-react-native init myProject
-cd myProject
-npm i jenchart react-native-svg
-react-native link
-``
+- react-native init myProject
+- cd myProject
+- npm i jenchart react-native-svg
+- react-native link
 
 React Native with expo:
-``
-expo init myProject
-cd myProject
-npm i jenchart && yarn add expo
-``
+- expo init myProject
+- cd myProject
+- npm i jenchart && yarn add expo
 
 ## Data
 ```
