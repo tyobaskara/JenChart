@@ -15,11 +15,16 @@ npm i jenchart
 
 React Native without expo:
 ``
+react-native init myProject
+cd myProject
 npm i jenchart react-native-svg
+react-native link
 ``
 
 React Native with expo:
 ``
+expo init myProject
+cd myProject
 npm i jenchart && yarn add expo
 ``
 
