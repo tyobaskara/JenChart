@@ -9,19 +9,8 @@ export default class JenChart extends PureComponent {
 
     this.state = {
       data: this.props.data,
-      activeIndex: '0'
+      activeIndex: this.props.activeIndex || '0'
     };
-  }
-
-  componentWillMount() {
-    const { activeIndex, data } = this.props;
-
-    if (activeIndex) {
-      this.setState({ activeIndex });
-    }
-    if (parseInt(activeIndex) + 1 > data.length) {
-      console.warn('activeIndex props exceeds the data length.');
-    }
   }
 
   _formatAxisLabel = value => {
@@ -38,17 +27,18 @@ export default class JenChart extends PureComponent {
     const { axisLabelColor, axisLabelSize } = this.props;
 
     return (
-    <Text
-      x='5'
-      textAnchor='start'
-      y={y ? y(value) * -1 - 5 : -2}
-      fontSize={axisLabelSize ? axisLabelSize : 10 }
-      fill={axisLabelColor ? axisLabelColor : 'black'}
-      fillOpacity={0.4}
-    >
-      {value ? this._formatAxisLabel(value) : 0}
-    </Text>
-  )};
+      <Text
+        x='5'
+        textAnchor='start'
+        y={y ? y(value) * -1 - 5 : -2}
+        fontSize={axisLabelSize ? axisLabelSize : 10}
+        fill={axisLabelColor ? axisLabelColor : 'black'}
+        fillOpacity={0.4}
+      >
+        {value ? this._formatAxisLabel(value) : 0}
+      </Text>
+    );
+  };
 
   _drawTopAxis = (axisColors, topValue, graphWidth, y) => (
     <G>

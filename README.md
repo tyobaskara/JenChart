@@ -6,6 +6,23 @@ https://tyobaskara.github.io/JenChart/
 Demo Apps:
 https://expo.io/@tyobaskara/chartExpo
 
+## Usage
+
+Web :
+``
+npm i jenchart
+``
+
+React Native without expo:
+``
+npm i jenchart react-native-svg
+``
+
+React Native with expo:
+``
+npm i jenchart && yarn add expo
+``
+
 ## Data
 ```
 [
