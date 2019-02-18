@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Svg, G, Line, Rect, Text, Circle, Image } from 'svgs';
 import * as d3 from 'd3';
 
+import triangle from './triangle.png';
+
 export default class JenChart extends PureComponent {
   constructor(props) {
     super(props);
@@ -125,14 +127,16 @@ export default class JenChart extends PureComponent {
       labelTopStyle,
       labelBottomStyle,
       labelBottomPosition,
-      triangle
+      isBabelSix,
+      triangleScale,
+      triangleSrc
     } = this.props;
 
     const labelActiveStyles = this._activeIndex(index)
       ? {
           fill: activeColor ? activeColor : '#00a4de'
         }
-      : null;
+      : {};
     const labelTopStyles = {
       fill: '#7d7d7d',
       fontSize: '10',
@@ -147,12 +151,22 @@ export default class JenChart extends PureComponent {
       ...labelBottomStyle,
       ...labelActiveStyles
     };
-    const triangleSize = triangle || 10;
+    const triangleSource = triangleSrc || triangle;
+    const triangleSize = triangleScale || 10;
+    const triangleProps = isBabelSix
+      ? {
+          x: (x(item.label) - (triangleSize / 2)) + 5,
+          y: 0 - GRAPH_MARGIN_VERTICAL + triangleSize
+        }
+      : {
+          x: x(item.label),
+          y: GRAPH_MARGIN_VERTICAL - triangleSize
+        };
 
     return (
       <G key={'label' + item.label}>
         <Text
-          {...labelTopStyles}
+          style={labelTopStyles}
           x={x(item.label) + 5}
           y='15'
           textAnchor='middle'
@@ -161,7 +175,7 @@ export default class JenChart extends PureComponent {
         </Text>
 
         <Text
-          {...labelBottomStyles}
+          style={labelBottomStyles}
           x={x(item.label) + 5}
           y={labelBottomPosition ? labelBottomPosition : 25}
           textAnchor='middle'
@@ -169,18 +183,17 @@ export default class JenChart extends PureComponent {
           {item.year}
         </Text>
 
-        {this._activeIndex(index) ? (
+        {this._activeIndex(index) && (
           <Image
-            x={x(item.label)}
-            y={GRAPH_MARGIN_VERTICAL - triangleSize}
             width={triangleSize}
             height={triangleSize}
             preserveAspectRatio='xMidYMid slice'
             opacity='1'
-            source={require('./triangle.png')}
+            href={triangleSource}
             clipPath='url(#clip)'
+            {...triangleProps}
           />
-        ) : null}
+        )}
       </G>
     );
   };
@@ -231,11 +244,10 @@ export default class JenChart extends PureComponent {
   };
 
   _drawLine = (x, y, index, array) => {
-    const lineStyleFromProp = this.props.lineStyle || {};
     const lineStyles = {
       stroke: '#00a4de',
       strokeWidth: 3,
-      ...lineStyleFromProp
+      ...this.props.lineStyle
     };
 
     return (
@@ -244,7 +256,7 @@ export default class JenChart extends PureComponent {
         y1={y(array[index].value.nett) * -1}
         x2={x(array[index + 1].label) + 5}
         y2={y(array[index + 1].value.nett) * -1}
-        {...lineStyles}
+        style={lineStyles}
       />
     );
   };
@@ -423,13 +435,16 @@ JenChart.defaultProps = {
   axisLabelSize: '',
   barColor: {},
   circleStyle: {},
+  isBabelSix: false,
   labelTopStyle: {},
   labelBottomStyle: {},
   labelBottomPosition: 0,
   lineStyle: {},
   marginVertical: 0,
   onPress: () => {},
-  svgStyles: {}
+  svgStyles: {},
+  triangleScale: 0,
+  triangleSrc: ''
 };
 
 JenChart.propTypes = {
@@ -442,11 +457,14 @@ JenChart.propTypes = {
   axisLabelSize: PropTypes.string,
   barColor: PropTypes.object,
   circleStyle: PropTypes.object,
+  isBabelSix: PropTypes.bool,
   labelTopStyle: PropTypes.object,
   labelBottomStyle: PropTypes.object,
   labelBottomPosition: PropTypes.number,
   lineStyle: PropTypes.object,
   marginVertical: PropTypes.number,
   onPress: PropTypes.func,
-  svgStyles: PropTypes.object
+  svgStyles: PropTypes.object,
+  triangleScale: PropTypes.number,
+  triangleSrc: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };

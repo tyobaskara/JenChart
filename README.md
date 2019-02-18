@@ -9,20 +9,30 @@ https://expo.io/@tyobaskara/chartExpo
 ## Usage
 
 Web :
+
 - npm i jenchart d3 svgs
 
 React Native without expo:
+
 - react-native init myProject
 - cd myProject
 - npm i jenchart react-native-svg d3 svgs
 - react-native link
 
 React Native with expo:
+
 - expo init myProject
 - cd myProject
 - npm i jenchart d3 svgs && yarn add expo
 
+## Babel 6 Support
+
+<Jenchart
+  isBabelSix
+ />
+
 ## Data
+
 ```
 [
   {
@@ -164,6 +174,7 @@ import {
 } from '../../components/BarChart';
 
 import JenChart from 'jenchart';
+import triangle from './triangle.png';
 
 import styles from './styles';
 
@@ -231,6 +242,8 @@ export default class Chart extends PureComponent {
               width: 700,
               height: 400
             }}
+            triangleScale={10}
+            triangleSrc={triangle}
           />
         </ScrollView>
 
