@@ -182,7 +182,7 @@ export default class JenChart extends PureComponent {
           {item.year}
         </Text>
 
-        {this._activeIndex(index) ? (
+        {this._activeIndex(index) && triangleSrc ? (
           <Image
             href={triangleSrc}
             preserveAspectRatio='xMidYMid slice'
