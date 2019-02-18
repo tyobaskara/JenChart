@@ -26,11 +26,14 @@ React Native with expo:
 - npm i jenchart d3 svgs && yarn add expo
 
 ## Babel 6 Support
+
 // Triangle Image Fixed in Babel 6
 
 <Jenchart
   isBabelSix
  />
+
+## Jenchart Props
 
 ## Data
 
@@ -60,6 +63,7 @@ import JenChart from 'jenchart';
 import data from './data';
 
 import './styles.css';
+import triangle from './triangle.png';
 import { jenChartWrapper, jeenChartWrapper, titleStyle } from './styles';
 
 export default class App extends PureComponent {
@@ -103,6 +107,7 @@ export default class App extends PureComponent {
                 width: this.state.jenchartWidth,
                 height: 300
               }}
+              triangleSrc={triangle}
             />
           )}
         </div>
@@ -145,6 +150,7 @@ export default class App extends PureComponent {
                 width: this.state.jeenchartWidth,
                 height: 450
               }}
+              triangleSrc={triangle}
             />
           )}
         </div>
@@ -199,6 +205,7 @@ export default class Chart extends PureComponent {
               width: width,
               height: 250
             }}
+            triangleSrc={triangle}
           />
         </View>
 

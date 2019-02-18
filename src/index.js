@@ -149,7 +149,6 @@ export default class JenChart extends PureComponent {
       ...labelBottomStyle,
       ...labelActiveStyles
     };
-    const triangleSource = triangleSrc || require('./triangle.png');
     const triangleSize = triangleScale || 10;
 
     // (x(item.label) - (triangleSize / 2)) + 5
@@ -185,7 +184,7 @@ export default class JenChart extends PureComponent {
 
         {this._activeIndex(index) ? (
           <Image
-            href={triangleSource}
+            href={triangleSrc}
             preserveAspectRatio='xMidYMid slice'
             height={triangleSize}
             width={triangleSize}
