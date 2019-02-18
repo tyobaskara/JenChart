@@ -26,6 +26,7 @@ React Native with expo:
 - npm i jenchart d3 svgs && yarn add expo
 
 ## Babel 6 Support
+// Triangle Image Fixed in Babel 6
 
 <Jenchart
   isBabelSix
