@@ -8,7 +8,7 @@ export default class JenChart extends PureComponent {
     super(props);
 
     this.state = {
-      data: this.props.data,
+      data: this.props.data || [],
       activeIndex: this.props.activeIndex || '0'
     };
   }
@@ -124,12 +124,15 @@ export default class JenChart extends PureComponent {
       activeColor,
       labelTopStyle,
       labelBottomStyle,
-      labelBottomPosition
+      labelBottomPosition,
+      triangle
     } = this.props;
 
-    const labelActiveStyles = this._activeIndex(index) && {
-      fill: activeColor ? activeColor : '#00a4de'
-    };
+    const labelActiveStyles = this._activeIndex(index)
+      ? {
+          fill: activeColor ? activeColor : '#00a4de'
+        }
+      : null;
     const labelTopStyles = {
       fill: '#7d7d7d',
       fontSize: '10',
@@ -144,12 +147,12 @@ export default class JenChart extends PureComponent {
       ...labelBottomStyle,
       ...labelActiveStyles
     };
-    const triangleSize = 10;
+    const triangleSize = triangle || 10;
 
     return (
       <G key={'label' + item.label}>
         <Text
-          style={labelTopStyles}
+          {...labelTopStyles}
           x={x(item.label) + 5}
           y='15'
           textAnchor='middle'
@@ -158,7 +161,7 @@ export default class JenChart extends PureComponent {
         </Text>
 
         <Text
-          style={labelBottomStyles}
+          {...labelBottomStyles}
           x={x(item.label) + 5}
           y={labelBottomPosition ? labelBottomPosition : 25}
           textAnchor='middle'
@@ -166,7 +169,7 @@ export default class JenChart extends PureComponent {
           {item.year}
         </Text>
 
-        {this._activeIndex(index) && (
+        {this._activeIndex(index) ? (
           <Image
             x={x(item.label)}
             y={GRAPH_MARGIN_VERTICAL - triangleSize}
@@ -174,10 +177,10 @@ export default class JenChart extends PureComponent {
             height={triangleSize}
             preserveAspectRatio='xMidYMid slice'
             opacity='1'
-            href={require('./triangle.png')}
+            source={require('./triangle.png')}
             clipPath='url(#clip)'
           />
-        )}
+        ) : null}
       </G>
     );
   };
@@ -228,10 +231,11 @@ export default class JenChart extends PureComponent {
   };
 
   _drawLine = (x, y, index, array) => {
+    const lineStyleFromProp = this.props.lineStyle || {};
     const lineStyles = {
       stroke: '#00a4de',
       strokeWidth: 3,
-      ...this.props.lineStyle
+      ...lineStyleFromProp
     };
 
     return (
@@ -240,7 +244,7 @@ export default class JenChart extends PureComponent {
         y1={y(array[index].value.nett) * -1}
         x2={x(array[index + 1].label) + 5}
         y2={y(array[index + 1].value.nett) * -1}
-        style={lineStyles}
+        {...lineStyles}
       />
     );
   };
