@@ -438,13 +438,16 @@ JenChart.defaultProps = {
   axisLabelSize: '',
   barColor: {},
   circleStyle: {},
+  isBabelSix: false,
   labelTopStyle: {},
   labelBottomStyle: {},
   labelBottomPosition: 0,
   lineStyle: {},
   marginVertical: 0,
   onPress: () => {},
-  svgStyles: {}
+  svgStyles: {},
+  triangleScale: 0,
+  triangleSrc: ''
 };
 
 JenChart.propTypes = {
@@ -457,11 +460,17 @@ JenChart.propTypes = {
   axisLabelSize: PropTypes.string,
   barColor: PropTypes.object,
   circleStyle: PropTypes.object,
+  isBabelSix: PropTypes.bool,
   labelTopStyle: PropTypes.object,
   labelBottomStyle: PropTypes.object,
   labelBottomPosition: PropTypes.number,
   lineStyle: PropTypes.object,
   marginVertical: PropTypes.number,
   onPress: PropTypes.func,
-  svgStyles: PropTypes.object
+  svgStyles: PropTypes.object,
+  triangleScale: PropTypes.number,
+  triangleSrc: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object
+  ])
 };
