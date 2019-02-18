@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Svg, G, Line, Rect, Text, Circle, Image } from 'svgs';
 import * as d3 from 'd3';
 
-import triangle from './triangle.png';
-
 export default class JenChart extends PureComponent {
   constructor(props) {
     super(props);
@@ -151,7 +149,7 @@ export default class JenChart extends PureComponent {
       ...labelBottomStyle,
       ...labelActiveStyles
     };
-    const triangleSource = triangleSrc || triangle;
+    const triangleSource = triangleSrc || require('./triangle.png');
     const triangleSize = triangleScale || 10;
 
     // (x(item.label) - (triangleSize / 2)) + 5
