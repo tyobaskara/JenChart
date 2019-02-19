@@ -4,6 +4,7 @@ import JenChart from '../../src';
 import data from './data';
 
 import './styles.css';
+import triangle from '../../src/triangle.png';
 import { jenChartWrapper, jeenChartWrapper, titleStyle } from './styles';
 
 export default class App extends PureComponent {
@@ -31,6 +32,9 @@ export default class App extends PureComponent {
     console.log(index, item);
   };
 
+  _detectmob = () =>
+    window.innerWidth <= 800 && window.innerHeight <= 600 ? true : false;
+
   render() {
     return (
       <div>
@@ -38,15 +42,38 @@ export default class App extends PureComponent {
           <h1 style={titleStyle}>JenChart Default</h1>
           {this.state.jenchartWidth && (
             <JenChart
-              data={data.slice(0, 6)}
-              activeIndex='3'
-              platform='web'
-              onPress={(index, item) => this._onPress(index, item)}
               svgStyles={{
                 backgroundColor: '#fff',
                 width: this.state.jenchartWidth,
                 height: 300
               }}
+              activeIndex='3'
+              axisLabelSize={this._detectmob() ? '11' : '14'}
+              axisLabelLeftPos={10}
+              axisCustom={{
+                strokeDasharray: [0, 0],
+                strokeWidth: 2
+              }}
+              borderBottom
+              borderBottomProp={{
+                stroke: '#dfdfdf',
+                strokeWidth: 2
+              }}
+              data={data.slice(0, 6)}
+              labelTopStyle={{
+                fontSize: '14'
+              }}
+              labelBottomStyle={{
+                fontSize: '14'
+              }}
+              labelTopPosition={20}
+              labelBottomPosition={35}
+              graphMarginVertical={60}
+              onPress={(index, item) => this._onPress(index, item)}
+              platform='web'
+              trianglePosition={6}
+              triangleSrc={triangle}
+              triangleScale={15}
             />
           )}
         </div>
@@ -65,6 +92,11 @@ export default class App extends PureComponent {
                 r: '5',
                 fill: 'red'
               }}
+              borderBottom
+              borderBottomProp={{
+                stroke: '#dfdfdf',
+                strokeWidth: 2
+              }}
               data={data}
               labelTopStyle={{
                 fill: 'red',
@@ -81,7 +113,7 @@ export default class App extends PureComponent {
                 stroke: 'magenta',
                 strokeWidth: 3
               }}
-              marginVertical={50}
+              graphMarginVertical={50}
               onPress={(index, item) => this._onPress(index, item)}
               platform='web'
               svgStyles={{
@@ -89,6 +121,9 @@ export default class App extends PureComponent {
                 width: this.state.jeenchartWidth,
                 height: 450
               }}
+              trianglePosition={6}
+              triangleSrc={triangle}
+              triangleScale={15}
             />
           )}
         </div>

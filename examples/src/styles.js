@@ -3,7 +3,7 @@ const jenChartWrapper = {
   borderWidth: 5,
   borderStyle: 'solid',
   borderColor: '#f5f5f5',
-  width: 320,
+  width: 400,
   margin: '10 auto'
 };
 
