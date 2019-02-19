@@ -27,13 +27,13 @@ React Native with expo:
 
 ## Babel 6 Support
 
-// Triangle Image Fixed in Babel 6
+// Triangle Image Position Bottom Fixed in Babel 6
 
+```
 <Jenchart
   isBabelSix
  />
-
-## Jenchart Props
+```
 
 ## Data
 
