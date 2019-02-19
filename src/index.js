@@ -8,31 +8,36 @@ export default class JenChart extends PureComponent {
     super(props);
 
     this.state = {
-      data: this.props.data || [],
-      activeIndex: this.props.activeIndex || '0'
+      data: this.props.data,
+      activeIndex: this.props.activeIndex
     };
   }
 
+  _toFixed = (number, round) => {
+    const num = number.toString();
+    return num.substring(0, num.indexOf('.') + (round + 1));
+  };
+
   _formatAxisLabel = value => {
     if (value.toString().length > 9) {
-      return value / 1000000000 + 'B';
+      return this._toFixed(value / 1000000000, 2) + 'B';
     } else if (value.toString().length > 6) {
-      return value / 1000000 + 'M';
+      return this._toFixed(value / 1000000, 2) + 'M';
     } else {
-      return value / 1000 + 'K';
+      return this._toFixed(value / 1000, 2) + 'K';
     }
   };
 
   _axisLabel = (y, value) => {
-    const { axisLabelColor, axisLabelSize } = this.props;
+    const { axisLabelColor, axisLabelSize, axisLabelLeftPos } = this.props;
 
     return (
       <Text
-        x='5'
+        x={axisLabelLeftPos}
         textAnchor='start'
         y={y ? y(value) * -1 - 5 : -2}
-        fontSize={axisLabelSize ? axisLabelSize : 10}
-        fill={axisLabelColor ? axisLabelColor : 'black'}
+        fontSize={axisLabelSize}
+        fill={axisLabelColor}
         fillOpacity={0.4}
       >
         {value ? this._formatAxisLabel(value) : 0}
@@ -40,99 +45,107 @@ export default class JenChart extends PureComponent {
     );
   };
 
-  _drawTopAxis = (axisColors, topValue, graphWidth, y) => (
+  _drawTopAxis = (axisCustomProp, topValue, graphWidth, y) => (
     <G>
       <Line
         x1='0'
         y1={y(topValue) * -1}
         x2={graphWidth}
         y2={y(topValue) * -1}
-        stroke={axisColors.axis}
-        strokeDasharray={[3, 3]}
-        strokeWidth='3'
+        {...axisCustomProp}
       />
 
       {this._axisLabel(y, topValue)}
     </G>
   );
 
-  _drawMiddleTopAxis = (axisColors, middleTopValue, graphWidth, y) => (
+  _drawMiddleTopAxis = (axisCustomProp, middleTopValue, graphWidth, y) => (
     <G>
       <Line
         x1='0'
         y1={y(middleTopValue) * -1}
         x2={graphWidth}
         y2={y(middleTopValue) * -1}
-        stroke={axisColors.axis}
-        strokeDasharray={[3, 3]}
-        strokeWidth='3'
+        {...axisCustomProp}
       />
 
       {this._axisLabel(y, middleTopValue)}
     </G>
   );
 
-  _drawMiddleAxis = (axisColors, middleValue, graphWidth, y) => (
+  _drawMiddleAxis = (axisCustomProp, middleValue, graphWidth, y) => (
     <G>
       <Line
         x1='0'
         y1={y(middleValue) * -1}
         x2={graphWidth}
         y2={y(middleValue) * -1}
-        stroke={axisColors.axis}
-        strokeDasharray={[3, 3]}
-        strokeWidth='3'
+        {...axisCustomProp}
       />
 
       {this._axisLabel(y, middleValue)}
     </G>
   );
 
-  _drawMiddleBottomAxis = (axisColors, middleBottomValue, graphWidth, y) => (
+  _drawMiddleBottomAxis = (
+    axisCustomProp,
+    middleBottomValue,
+    graphWidth,
+    y
+  ) => (
     <G>
       <Line
         x1='0'
         y1={y(middleBottomValue) * -1}
         x2={graphWidth}
         y2={y(middleBottomValue) * -1}
-        stroke={axisColors.axis}
-        strokeDasharray={[3, 3]}
-        strokeWidth='3'
+        {...axisCustomProp}
       />
 
       {this._axisLabel(y, middleBottomValue)}
     </G>
   );
 
-  _drawBottomAxis = (axisColors, graphWidth) => (
+  _drawBottomAxis = (axisCustomProp, graphWidth) => (
     <G>
       <Line
         x1='0'
         y1='2'
         x2={graphWidth}
         y2='2'
-        stroke={axisColors.axis}
-        strokeWidth='3'
+        stroke={axisCustomProp.stroke}
+        strokeWidth={axisCustomProp.strokeWidth}
       />
 
       {this._axisLabel()}
     </G>
   );
 
-  _drawBottomLabels = (index, item, x, GRAPH_MARGIN_VERTICAL) => {
+  _drawBottomBorder = () => {
+    const { svgStyles, borderBottomProp, graphMarginVertical } = this.props;
+    const graphWidth = svgStyles.width;
+
+    return (
+      <Line x1='0' y1={graphMarginVertical} x2={graphWidth} y2={graphMarginVertical} {...borderBottomProp} />
+    );
+  };
+
+  _drawBottomLabels = (index, item, x, graphMarginVertical) => {
     const {
       activeColor,
       isBabelSix,
       labelTopStyle,
       labelBottomStyle,
       labelBottomPosition,
+      labelTopPosition,
+      trianglePosition,
       triangleScale,
       triangleSrc
     } = this.props;
 
     const labelActiveStyles = this._activeIndex(index)
       ? {
-          fill: activeColor ? activeColor : '#00a4de'
+          fill: activeColor
         }
       : null;
     const labelTopStyles = {
@@ -149,17 +162,15 @@ export default class JenChart extends PureComponent {
       ...labelBottomStyle,
       ...labelActiveStyles
     };
-    const triangleSize = triangleScale || 10;
-
-    // (x(item.label) - (triangleSize / 2)) + 5
+    const triangleSize = triangleScale;
     const triangleProps = isBabelSix
       ? {
-          x: x(item.label) - triangleSize / 2 + 5,
-          y: 0 - GRAPH_MARGIN_VERTICAL + triangleSize
+          x: (x(item.label) - (triangleSize / 2)) + 5,
+          y: ((0 - graphMarginVertical) + triangleSize) - trianglePosition
         }
       : {
           x: x(item.label),
-          y: GRAPH_MARGIN_VERTICAL - triangleSize
+          y: (graphMarginVertical - triangleSize) + trianglePosition
         };
 
     return (
@@ -167,7 +178,7 @@ export default class JenChart extends PureComponent {
         <Text
           {...labelTopStyles}
           x={x(item.label) + 5}
-          y='15'
+          y={labelTopPosition}
           textAnchor='middle'
         >
           {item.label}
@@ -176,13 +187,13 @@ export default class JenChart extends PureComponent {
         <Text
           {...labelBottomStyles}
           x={x(item.label) + 5}
-          y={labelBottomPosition ? labelBottomPosition : 25}
+          y={labelBottomPosition}
           textAnchor='middle'
         >
           {item.year}
         </Text>
 
-        {this._activeIndex(index) && triangleSrc ? (
+        {this._activeIndex(index) && triangleSrc && (
           <Image
             href={triangleSrc}
             preserveAspectRatio='xMidYMid slice'
@@ -192,12 +203,12 @@ export default class JenChart extends PureComponent {
             clipPath='url(#clip)'
             {...triangleProps}
           />
-        ) : null}
+        )}
       </G>
     );
   };
 
-  _drawBars = (item, GRAPH_BAR_WIDTH, x, y) => {
+  _drawBars = (item, graphBarWidth, x, y) => {
     const barColors = {
       barLeft: '#8fbc5a',
       barRight: '#fc9d13',
@@ -207,10 +218,10 @@ export default class JenChart extends PureComponent {
     return (
       <G>
         <Rect
-          x={x(item.label) - GRAPH_BAR_WIDTH / 2}
+          x={x(item.label) - graphBarWidth / 2}
           y={y(item.value.income) * -1}
           rx={2.5}
-          width={GRAPH_BAR_WIDTH}
+          width={graphBarWidth}
           height={y(item.value.income)}
           fill={barColors.barLeft}
         />
@@ -218,7 +229,7 @@ export default class JenChart extends PureComponent {
           x={x(item.label) + 7}
           y={y(item.value.spending) * -1}
           rx={2.5}
-          width={GRAPH_BAR_WIDTH}
+          width={graphBarWidth}
           height={y(item.value.spending)}
           fill={barColors.barRight}
         />
@@ -243,7 +254,7 @@ export default class JenChart extends PureComponent {
   };
 
   _drawLine = (x, y, index, array) => {
-    const lineStyleFromProp = this.props.lineStyle || {};
+    const lineStyleFromProp = this.props.lineStyle;
     const lineStyles = {
       stroke: '#00a4de',
       strokeWidth: 3,
@@ -279,9 +290,9 @@ export default class JenChart extends PureComponent {
     index,
     item,
     x,
-    GRAPH_BAR_WIDTH,
+    graphBarWidth,
     graphHeight,
-    GRAPH_MARGIN_VERTICAL,
+    graphMarginVertical,
     platform
   ) => {
     const propsOnpress = {};
@@ -292,10 +303,10 @@ export default class JenChart extends PureComponent {
 
     return (
       <Rect
-        x={x(item.label) - GRAPH_BAR_WIDTH / 2}
+        x={x(item.label) - graphBarWidth / 2}
         y={graphHeight * -1}
-        width={x(item.label) - GRAPH_BAR_WIDTH / 2}
-        height={graphHeight + GRAPH_MARGIN_VERTICAL}
+        width={x(item.label) - graphBarWidth / 2}
+        height={graphHeight + graphMarginVertical}
         fill='transparent'
         opacity='0.5'
         {...propsOnpress}
@@ -308,23 +319,24 @@ export default class JenChart extends PureComponent {
   render() {
     const {
       axisColor,
-      barWidth,
-      marginVertical,
+      axisCustom,
+      graphBarWidth,
+      borderBottom,
+      graphMarginVertical,
       platform,
       svgStyles
     } = this.props;
-    const GRAPH_MARGIN_VERTICAL = marginVertical || 40;
-    const GRAPH_BAR_WIDTH = barWidth || 10;
-    const axisColors = {
-      axis: axisColor || '#f5f5f5'
+    const axisCustomProp = {
+      stroke: axisColor,
+      strokeDasharray: [3, 3],
+      strokeWidth: '3',
+      ...axisCustom
     };
 
     // Dimensions
     const { data } = this.state;
-    const SVGHeight = svgStyles.height;
-    const SVGWidth = svgStyles.width;
-    const graphHeight = SVGHeight - 2 * GRAPH_MARGIN_VERTICAL;
-    const graphWidth = SVGWidth;
+    const graphHeight = svgStyles.height - 2 * graphMarginVertical;
+    const graphWidth = svgStyles.width;
 
     // X scale point
     const xDomain = data.map(item => item.label);
@@ -351,26 +363,32 @@ export default class JenChart extends PureComponent {
 
     return (
       <Svg style={svgStyles}>
-        <G y={graphHeight + GRAPH_MARGIN_VERTICAL}>
-          {this._drawTopAxis(axisColors, topValue, graphWidth, y)}
-          {this._drawMiddleTopAxis(axisColors, middleTopValue, graphWidth, y)}
-          {this._drawMiddleAxis(axisColors, middleValue, graphWidth, y)}
+        <G y={graphHeight + graphMarginVertical}>
+          {this._drawTopAxis(axisCustomProp, topValue, graphWidth, y)}
+          {this._drawMiddleTopAxis(
+            axisCustomProp,
+            middleTopValue,
+            graphWidth,
+            y
+          )}
+          {this._drawMiddleAxis(axisCustomProp, middleValue, graphWidth, y)}
           {this._drawMiddleBottomAxis(
-            axisColors,
+            axisCustomProp,
             middleBottomValue,
             graphWidth,
             y
           )}
-          {this._drawBottomAxis(axisColors, graphWidth)}
+          {this._drawBottomAxis(axisCustomProp, graphWidth)}
+          {borderBottom && this._drawBottomBorder()}
 
           {data.map((item, index, array) =>
-            this._drawBottomLabels(index, item, x, GRAPH_MARGIN_VERTICAL)
+            this._drawBottomLabels(index, item, x, graphMarginVertical)
           )}
         </G>
 
         {data.map(item => (
-          <G y={graphHeight + GRAPH_MARGIN_VERTICAL} key={'bar' + item.label}>
-            {this._drawBars(item, GRAPH_BAR_WIDTH, x, y)}
+          <G y={graphHeight + graphMarginVertical} key={'bar' + item.label}>
+            {this._drawBars(item, graphBarWidth, x, y)}
             {this._drawCircle(item, x, y)}
           </G>
         ))}
@@ -379,7 +397,7 @@ export default class JenChart extends PureComponent {
           (item, index, array) =>
             index < array.length - 1 && (
               <G
-                y={graphHeight + GRAPH_MARGIN_VERTICAL}
+                y={graphHeight + graphMarginVertical}
                 key={'line' + item.label}
               >
                 {this._drawLine(x, y, index, array)}
@@ -390,7 +408,7 @@ export default class JenChart extends PureComponent {
         {data.map((item, index, array) =>
           platform === 'web' ? (
             <Svg
-              y={graphHeight + GRAPH_MARGIN_VERTICAL}
+              y={graphHeight + graphMarginVertical}
               key={'rectOnPress' + item.label}
               onClick={() => this._rectOnPress(index, item)}
               style={{ overflow: 'initial' }}
@@ -399,24 +417,24 @@ export default class JenChart extends PureComponent {
                 index,
                 item,
                 x,
-                GRAPH_BAR_WIDTH,
+                graphBarWidth,
                 graphHeight,
-                GRAPH_MARGIN_VERTICAL,
+                graphMarginVertical,
                 platform
               )}
             </Svg>
           ) : (
             <G
-              y={graphHeight + GRAPH_MARGIN_VERTICAL}
+              y={graphHeight + graphMarginVertical}
               key={'rectOnPress' + item.label}
             >
               {this._drawRectOnPress(
                 index,
                 item,
                 x,
-                GRAPH_BAR_WIDTH,
+                graphBarWidth,
                 graphHeight,
-                GRAPH_MARGIN_VERTICAL,
+                graphMarginVertical,
                 platform
               )}
             </G>
@@ -428,23 +446,30 @@ export default class JenChart extends PureComponent {
 }
 
 JenChart.defaultProps = {
-  activeColor: '',
-  activeIndex: '',
-  axisColor: '',
-  axisLabelColor: '',
-  axisLabelSize: '',
+  activeColor: '#00a4de',
+  activeIndex: '0',
+  axisColor: '#f5f5f5',
+  axisCustom: {},
+  axisLabelColor: 'black',
+  axisLabelLeftPos: 5,
+  axisLabelSize: '10',
   barColor: {},
+  borderBottom: false,
+  borderBottomProp: {},
   circleStyle: {},
+  data: [],
   isBabelSix: false,
+  graphBarWidth: 12,
   labelTopStyle: {},
+  labelTopPosition: 15,
   labelBottomStyle: {},
-  labelBottomPosition: 0,
+  labelBottomPosition: 25,
   lineStyle: {},
-  marginVertical: 0,
+  graphMarginVertical: 40,
   onPress: () => {},
   svgStyles: {},
-  triangleScale: 0,
-  triangleSrc: ''
+  trianglePosition: 0,
+  triangleScale: 10
 };
 
 JenChart.propTypes = {
@@ -453,21 +478,24 @@ JenChart.propTypes = {
   activeColor: PropTypes.string,
   activeIndex: PropTypes.string,
   axisColor: PropTypes.string,
+  axisCustom: PropTypes.object,
   axisLabelColor: PropTypes.string,
+  axisLabelLeftPos: PropTypes.number,
   axisLabelSize: PropTypes.string,
   barColor: PropTypes.object,
+  borderBottom: PropTypes.bool,
+  borderBottomProp: PropTypes.object,
   circleStyle: PropTypes.object,
   isBabelSix: PropTypes.bool,
+  graphBarWidth: PropTypes.number,
+  graphMarginVertical: PropTypes.number,
   labelTopStyle: PropTypes.object,
+  labelTopPosition: PropTypes.number,
   labelBottomStyle: PropTypes.object,
   labelBottomPosition: PropTypes.number,
   lineStyle: PropTypes.object,
-  marginVertical: PropTypes.number,
   onPress: PropTypes.func,
   svgStyles: PropTypes.object,
-  triangleScale: PropTypes.number,
-  triangleSrc: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object
-  ])
+  trianglePosition: PropTypes.number,
+  triangleScale: PropTypes.number
 };

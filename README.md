@@ -10,20 +10,20 @@ https://expo.io/@tyobaskara/chartExpo
 
 Web :
 
-- npm i jenchart d3 svgs
+- npm i jenchart d3 svgs prop-types
 
 React Native without expo:
 
 - react-native init myProject
 - cd myProject
-- npm i jenchart react-native-svg d3 svgs
+- npm i jenchart react-native-svg d3 svgs prop-types
 - react-native link
 
 React Native with expo:
 
 - expo init myProject
 - cd myProject
-- npm i jenchart d3 svgs && yarn add expo
+- npm i jenchart d3 svgs prop-types && yarn add expo
 
 ## Babel 6 Support
 
@@ -53,6 +53,63 @@ React Native with expo:
 ```
 
 ## Web - React js
+
+Example 1:
+
+```
+_renderJenChart = () =>
+    Platform.OS === 'web' ? (
+      <View
+        onLayout={event => {
+          const { width } = event.nativeEvent.layout;
+          this.setState({ webChartWidth: width });
+        }}
+      >
+        {this.state.webChartWidth && this._renderWebJenChart()}
+      </View>
+    ) : (
+      this._renderMobJenChart()
+    );
+
+  _renderWebJenChart = () => (
+    <JenChart
+      activeIndex='3'
+      axisLabelSize={this._detectmob() ? '11' : '14'}
+      axisLabelLeftPos={10}
+      axisCustom={{
+        strokeDasharray: [0, 0],
+        strokeWidth: 2
+      }}
+      borderBottom
+      borderBottomProp={{
+        stroke: '#dfdfdf',
+        strokeWidth: 2
+      }}
+      data={data.slice(0, 6)}
+      labelTopStyle={{
+        fontSize: '14'
+      }}
+      labelBottomStyle={{
+        fontSize: '14'
+      }}
+      labelTopPosition={20}
+      labelBottomPosition={35}
+      graphMarginVertical={60}
+      onPress={(index, item) => this._onPress(index, item)}
+      platform='web'
+      svgStyles={{
+        backgroundColor: '#fff',
+        width: this.state.webChartWidth,
+        height: 300
+      }}
+      trianglePosition={6}
+      triangleSrc={triangle}
+      triangleScale={15}
+    />
+  );
+```
+
+Example 2:
 
 ```
 // examples/src/index.js
@@ -142,7 +199,7 @@ export default class App extends PureComponent {
                 stroke: 'magenta',
                 strokeWidth: 3
               }}
-              marginVertical={50}
+              graphBarWidth={50}
               onPress={(index, item) => this._onPress(index, item)}
               platform='web'
               svgStyles={{
@@ -163,6 +220,43 @@ render(<App />, document.getElementById('root'));
 ```
 
 ## Mobile - React Native
+
+Example 1:
+
+```
+_renderMobJenChart = () => {
+    const { width } = Dimensions.get('window');
+
+    return (
+      <JenChart
+        activeIndex='3'
+        axisCustom={{
+          strokeDasharray: [0, 0],
+          strokeWidth: 2
+        }}
+        borderBottom
+        borderBottomProp={{
+          stroke: '#dfdfdf',
+          strokeWidth: 2
+        }}
+        data={data.slice(0, 6)}
+        isBabelSix
+        onPress={(index, item) => this._onPress(index, item)}
+        platform='mobile'
+        svgStyles={{
+          backgroundColor: '#fff',
+          width,
+          height: 250
+        }}
+        trianglePosition={6}
+        triangleSrc={triangle}
+        triangleScale={15}
+      />
+    );
+  };
+```
+
+Example 2:
 
 ```
 // https://github.com/tyobaskara/learn-react-native/tree/master/JenChart/chartExpo
@@ -242,7 +336,7 @@ export default class Chart extends PureComponent {
               stroke: 'magenta',
               strokeWidth: 3
             }}
-            marginVertical={50}
+            graphBarWidth={50}
             onPress={(index, item) => this._onPress(index, item)}
             platform={Platform.OS}
             svgStyles={{
@@ -278,4 +372,63 @@ export default class Chart extends PureComponent {
     );
   }
 }
+```
+
+## Props
+
+```
+JenChart.defaultProps = {
+  activeColor: '#00a4de',
+  activeIndex: '0',
+  axisColor: '#f5f5f5',
+  axisCustom: {},
+  axisLabelColor: 'black',
+  axisLabelLeftPos: 5,
+  axisLabelSize: '10',
+  barColor: {},
+  borderBottom: false,
+  borderBottomProp: {},
+  circleStyle: {},
+  data: [],
+  isBabelSix: false,
+  graphBarWidth: 12,
+  labelTopStyle: {},
+  labelTopPosition: 15,
+  labelBottomStyle: {},
+  labelBottomPosition: 25,
+  lineStyle: {},
+  graphMarginVertical: 40,
+  onPress: () => {},
+  svgStyles: {},
+  trianglePosition: 0,
+  triangleScale: 10
+};
+
+JenChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  platform: PropTypes.string.isRequired,
+  activeColor: PropTypes.string,
+  activeIndex: PropTypes.string,
+  axisColor: PropTypes.string,
+  axisCustom: PropTypes.object,
+  axisLabelColor: PropTypes.string,
+  axisLabelLeftPos: PropTypes.number,
+  axisLabelSize: PropTypes.string,
+  barColor: PropTypes.object,
+  graphBarWidth: PropTypes.number,
+  borderBottom: PropTypes.bool,
+  borderBottomProp: PropTypes.object,
+  circleStyle: PropTypes.object,
+  isBabelSix: PropTypes.bool,
+  labelTopStyle: PropTypes.object,
+  labelTopPosition: PropTypes.number,
+  labelBottomStyle: PropTypes.object,
+  labelBottomPosition: PropTypes.number,
+  lineStyle: PropTypes.object,
+  graphMarginVertical: PropTypes.number,
+  onPress: PropTypes.func,
+  svgStyles: PropTypes.object,
+  trianglePosition: PropTypes.number,
+  triangleScale: PropTypes.number
+};
 ```
