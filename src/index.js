@@ -464,7 +464,6 @@ JenChart.defaultProps = {
   graphMarginVertical: 40,
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   onPress: () => {},
-  reverseData: false,
   svgStyles: {},
   trianglePosition: 0,
   triangleScale: 10
@@ -494,7 +493,6 @@ JenChart.propTypes = {
   lineStyle: PropTypes.object,
   months: PropTypes.array,
   onPress: PropTypes.func,
-  reverseData: PropTypes.bool,
   svgStyles: PropTypes.object,
   trianglePosition: PropTypes.number,
   triangleScale: PropTypes.number
