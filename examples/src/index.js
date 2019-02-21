@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { render } from 'react-dom';
 import JenChart from '../../src';
-import data from './data';
+import pfmData from './data';
 
 import './styles.css';
 import triangle from '../../src/triangle.png';
@@ -21,6 +21,7 @@ export default class App extends PureComponent {
   }
 
   componentDidMount() {
+    pfmData.pfmOverviews.reverse();
     this.measure();
   }
 
@@ -47,7 +48,7 @@ export default class App extends PureComponent {
                 width: this.state.jenchartWidth,
                 height: 300
               }}
-              activeIndex='3'
+              activeIndex='1'
               axisLabelSize={this._detectmob() ? '11' : '14'}
               axisLabelLeftPos={10}
               axisCustom={{
@@ -59,7 +60,8 @@ export default class App extends PureComponent {
                 stroke: '#dfdfdf',
                 strokeWidth: 2
               }}
-              data={data.slice(0, 6)}
+              data={pfmData.pfmOverviews}
+              reverseData
               labelTopStyle={{
                 fontSize: '14'
               }}
@@ -97,7 +99,8 @@ export default class App extends PureComponent {
                 stroke: '#dfdfdf',
                 strokeWidth: 2
               }}
-              data={data}
+              data={pfmData.pfmOverviews}
+              reverseData
               labelTopStyle={{
                 fill: 'red',
                 fontSize: '13',

@@ -38,89 +38,184 @@ React Native with expo:
 ## Data
 
 ```
-[
-  {
-    label: 'Jan',
-    year: '2018',
-    value: {
-      income: 5000000,
-      spending: 2500000,
-      nett: 2500000
-    }
-  },
-  ...
-]
+export default {
+  pfmOverviews: [
+    {
+      cif: '49022A',
+      currency: 'idr',
+      timeGroup: 'monthly',
+      lastTransactionDate: '2019-02-20T04:18:28.908Z',
+      pfmTypes: [
+        {
+          id: '1',
+          name: 'Income',
+          colorIncrease: '#123456',
+          colorDecrease: '#123456',
+          total: 200000,
+          previousGroupDifferencePercentage: 20,
+          pfmCategories: [
+            {
+              id: '1',
+              name: 'Salary',
+              color: '#123456',
+              transactionCategories: ['201', '205', '212', '213'],
+              isSummaryOnly: false,
+              total: 100000,
+              totalPercentage: 50
+            },
+            {
+              id: '2',
+              name: 'Incoming',
+              color: '#123456',
+              transactionCategories: ['202', '204', '210', '211', '214'],
+              isSummaryOnly: false,
+              total: 60000,
+              totalPercentage: 30
+            },
+            {
+              id: '3',
+              name: 'Interest',
+              color: '#123456',
+              transactionCategories: ['206', '207'],
+              isSummaryOnly: false,
+              total: 40000,
+              totalPercentage: 20
+            }
+          ]
+        },
+        {
+          id: '2',
+          name: 'Spending',
+          colorIncrease: '#123456',
+          colorDecrease: '#123456',
+          total: 100000,
+          previousGroupDifferencePercentage: 10,
+          pfmCategories: [
+            {
+              id: '4',
+              name: 'Installment',
+              color: '#123456',
+              transactionCategories: ['103', '105', '109', '112', '142'],
+              isSummaryOnly: false,
+              total: 30000,
+              totalPercentage: 30
+            },
+            {
+              id: '5',
+              name: 'Routine',
+              color: '#123456',
+              transactionCategories: [
+                '101',
+                '102',
+                '106',
+                '107',
+                '108',
+                '110',
+                '114',
+                '115',
+                '118',
+                '123',
+                '125',
+                '129',
+                '130',
+                '131',
+                '132',
+                '138',
+                '140',
+                '141',
+                '143',
+                '144',
+                '215'
+              ],
+              isSummaryOnly: false,
+              total: 10000,
+              totalPercentage: 10
+            },
+            {
+              id: '6',
+              name: 'Charity',
+              color: '#123456',
+              transactionCategories: ['133', '135'],
+              isSummaryOnly: false,
+              total: 20000,
+              totalPercentage: 20
+            },
+            {
+              id: '7',
+              name: 'Lifestyle',
+              color: '#123456',
+              transactionCategories: [
+                '104',
+                '117',
+                '119',
+                '120',
+                '121',
+                '122',
+                '124',
+                '126',
+                '127',
+                '128',
+                '134',
+                '137',
+                '203'
+              ],
+              isSummaryOnly: false,
+              total: 13000,
+              totalPercentage: 13
+            },
+            {
+              id: '8',
+              name: 'Uncategorized',
+              color: '#123456',
+              transactionCategories: ['116', '998'],
+              isSummaryOnly: true,
+              total: 17000,
+              totalPercentage: 17
+            }
+          ]
+        },
+        {
+          id: '3',
+          name: 'Net',
+          colorIncrease: '#123456',
+          colorDecrease: '#123456',
+          total: 100000,
+          previousGroupDifferencePercentage: 0,
+          pfmCategories: []
+        },
+        {
+          id: '4',
+          name: 'Balance',
+          colorIncrease: '#123456',
+          colorDecrease: '#123456',
+          total: 300000,
+          previousGroupDifferencePercentage: 0,
+          pfmCategories: []
+        }
+      ],
+      __typename: 'PfmOverview'
+    },
+    {
+      ...
+    },
+    ...
+}
 ```
 
 ## Web - React js
 
-Example 1:
-
-```
-_renderJenChart = () =>
-    Platform.OS === 'web' ? (
-      <View
-        onLayout={event => {
-          const { width } = event.nativeEvent.layout;
-          this.setState({ webChartWidth: width });
-        }}
-      >
-        {this.state.webChartWidth && this._renderWebJenChart()}
-      </View>
-    ) : (
-      this._renderMobJenChart()
-    );
-
-  _renderWebJenChart = () => (
-    <JenChart
-      activeIndex='3'
-      axisLabelSize={this._detectmob() ? '11' : '14'}
-      axisLabelLeftPos={10}
-      axisCustom={{
-        strokeDasharray: [0, 0],
-        strokeWidth: 2
-      }}
-      borderBottom
-      borderBottomProp={{
-        stroke: '#dfdfdf',
-        strokeWidth: 2
-      }}
-      data={data.slice(0, 6)}
-      labelTopStyle={{
-        fontSize: '14'
-      }}
-      labelBottomStyle={{
-        fontSize: '14'
-      }}
-      labelTopPosition={20}
-      labelBottomPosition={35}
-      graphMarginVertical={60}
-      onPress={(index, item) => this._onPress(index, item)}
-      platform='web'
-      svgStyles={{
-        backgroundColor: '#fff',
-        width: this.state.webChartWidth,
-        height: 300
-      }}
-      trianglePosition={6}
-      triangleSrc={triangle}
-      triangleScale={15}
-    />
-  );
-```
-
-Example 2:
+Example:
 
 ```
 // examples/src/index.js
 
 import React, { PureComponent } from 'react';
 import { render } from 'react-dom';
-import JenChart from 'jenchart';
-import data from './data';
+import JenChart from '../../src';
+import pfmData from './data';
 
 import './styles.css';
-import triangle from './triangle.png';
+import triangle from '../../src/triangle.png';
 import { jenChartWrapper, jeenChartWrapper, titleStyle } from './styles';
 
 export default class App extends PureComponent {
@@ -137,6 +232,7 @@ export default class App extends PureComponent {
   }
 
   componentDidMount() {
+    pfmData.pfmOverviews.reverse();
     this.measure();
   }
 
@@ -148,6 +244,9 @@ export default class App extends PureComponent {
     console.log(index, item);
   };
 
+  _detectmob = () =>
+    window.innerWidth <= 800 && window.innerHeight <= 600 ? true : false;
+
   render() {
     return (
       <div>
@@ -155,16 +254,39 @@ export default class App extends PureComponent {
           <h1 style={titleStyle}>JenChart Default</h1>
           {this.state.jenchartWidth && (
             <JenChart
-              data={data.slice(0, 6)}
-              activeIndex='3'
-              platform='web'
-              onPress={(index, item) => this._onPress(index, item)}
               svgStyles={{
                 backgroundColor: '#fff',
                 width: this.state.jenchartWidth,
                 height: 300
               }}
+              activeIndex='1'
+              axisLabelSize={this._detectmob() ? '11' : '14'}
+              axisLabelLeftPos={10}
+              axisCustom={{
+                strokeDasharray: [0, 0],
+                strokeWidth: 2
+              }}
+              borderBottom
+              borderBottomProp={{
+                stroke: '#dfdfdf',
+                strokeWidth: 2
+              }}
+              data={pfmData.pfmOverviews}
+              reverseData
+              labelTopStyle={{
+                fontSize: '14'
+              }}
+              labelBottomStyle={{
+                fontSize: '14'
+              }}
+              labelTopPosition={20}
+              labelBottomPosition={35}
+              graphMarginVertical={60}
+              onPress={(index, item) => this._onPress(index, item)}
+              platform='web'
+              trianglePosition={6}
               triangleSrc={triangle}
+              triangleScale={15}
             />
           )}
         </div>
@@ -183,7 +305,13 @@ export default class App extends PureComponent {
                 r: '5',
                 fill: 'red'
               }}
-              data={data}
+              borderBottom
+              borderBottomProp={{
+                stroke: '#dfdfdf',
+                strokeWidth: 2
+              }}
+              data={pfmData.pfmOverviews}
+              reverseData
               labelTopStyle={{
                 fill: 'red',
                 fontSize: '13',
@@ -199,7 +327,7 @@ export default class App extends PureComponent {
                 stroke: 'magenta',
                 strokeWidth: 3
               }}
-              graphBarWidth={50}
+              graphMarginVertical={50}
               onPress={(index, item) => this._onPress(index, item)}
               platform='web'
               svgStyles={{
@@ -207,7 +335,9 @@ export default class App extends PureComponent {
                 width: this.state.jeenchartWidth,
                 height: 450
               }}
+              trianglePosition={6}
               triangleSrc={triangle}
+              triangleScale={15}
             />
           )}
         </div>
@@ -398,7 +528,9 @@ JenChart.defaultProps = {
   labelBottomPosition: 25,
   lineStyle: {},
   graphMarginVertical: 40,
+  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   onPress: () => {},
+  reverseData: false,
   svgStyles: {},
   trianglePosition: 0,
   triangleScale: 10
@@ -415,18 +547,20 @@ JenChart.propTypes = {
   axisLabelLeftPos: PropTypes.number,
   axisLabelSize: PropTypes.string,
   barColor: PropTypes.object,
-  graphBarWidth: PropTypes.number,
   borderBottom: PropTypes.bool,
   borderBottomProp: PropTypes.object,
   circleStyle: PropTypes.object,
   isBabelSix: PropTypes.bool,
+  graphBarWidth: PropTypes.number,
+  graphMarginVertical: PropTypes.number,
   labelTopStyle: PropTypes.object,
   labelTopPosition: PropTypes.number,
   labelBottomStyle: PropTypes.object,
   labelBottomPosition: PropTypes.number,
   lineStyle: PropTypes.object,
-  graphMarginVertical: PropTypes.number,
+  months: PropTypes.array,
   onPress: PropTypes.func,
+  reverseData: PropTypes.bool,
   svgStyles: PropTypes.object,
   trianglePosition: PropTypes.number,
   triangleScale: PropTypes.number

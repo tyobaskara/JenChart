@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Svg, G, Line, Rect, Text, Circle, Image } from 'svgs';
 import * as d3 from 'd3';
 
+import { _formatAxisLabel, _getMonth, _getYear, _selectObject } from './util';
+
 export default class JenChart extends PureComponent {
   constructor(props) {
     super(props);
@@ -12,21 +14,6 @@ export default class JenChart extends PureComponent {
       activeIndex: this.props.activeIndex
     };
   }
-
-  _toFixed = (number, round) => {
-    const num = number.toString();
-    return num.substring(0, num.indexOf('.') + (round + 1));
-  };
-
-  _formatAxisLabel = value => {
-    if (value.toString().length > 9) {
-      return this._toFixed(value / 1000000000, 2) + 'B';
-    } else if (value.toString().length > 6) {
-      return this._toFixed(value / 1000000, 2) + 'M';
-    } else {
-      return this._toFixed(value / 1000, 2) + 'K';
-    }
-  };
 
   _axisLabel = (y, value) => {
     const { axisLabelColor, axisLabelSize, axisLabelLeftPos } = this.props;
@@ -40,7 +27,7 @@ export default class JenChart extends PureComponent {
         fill={axisLabelColor}
         fillOpacity={0.4}
       >
-        {value ? this._formatAxisLabel(value) : 0}
+        {value ? _formatAxisLabel(value) : 0}
       </Text>
     );
   };
@@ -138,6 +125,7 @@ export default class JenChart extends PureComponent {
       labelBottomStyle,
       labelBottomPosition,
       labelTopPosition,
+      months,
       trianglePosition,
       triangleScale,
       triangleSrc
@@ -165,32 +153,32 @@ export default class JenChart extends PureComponent {
     const triangleSize = triangleScale;
     const triangleProps = isBabelSix
       ? {
-          x: (x(item.label) - (triangleSize / 2)) + 5,
+          x: (x(item.lastTransactionDate) - (triangleSize / 2)) + 5,
           y: ((0 - graphMarginVertical) + triangleSize) - trianglePosition
         }
       : {
-          x: x(item.label),
+          x: x(item.lastTransactionDate),
           y: (graphMarginVertical - triangleSize) + trianglePosition
         };
 
     return (
-      <G key={'label' + item.label}>
+      <G key={'label' + item.lastTransactionDate}>
         <Text
           {...labelTopStyles}
-          x={x(item.label) + 5}
+          x={x(item.lastTransactionDate) + 5}
           y={labelTopPosition}
           textAnchor='middle'
         >
-          {item.label}
+          {months[_getMonth(item.lastTransactionDate) - 1]}
         </Text>
 
         <Text
           {...labelBottomStyles}
-          x={x(item.label) + 5}
+          x={x(item.lastTransactionDate) + 5}
           y={labelBottomPosition}
           textAnchor='middle'
         >
-          {item.year}
+          {_getYear(item.lastTransactionDate)}
         </Text>
 
         {this._activeIndex(index) && triangleSrc && (
@@ -214,23 +202,25 @@ export default class JenChart extends PureComponent {
       barRight: '#fc9d13',
       ...this.props.barColor
     };
+    const Income = _selectObject(item.pfmTypes, 'name', 'Income');
+    const Spending = _selectObject(item.pfmTypes, 'name', 'Spending');
 
     return (
       <G>
         <Rect
-          x={x(item.label) - graphBarWidth / 2}
-          y={y(item.value.income) * -1}
+          x={x(item.lastTransactionDate) - graphBarWidth / 2}
+          y={y(Income.total) * -1}
           rx={2.5}
           width={graphBarWidth}
-          height={y(item.value.income)}
+          height={y(Income.total)}
           fill={barColors.barLeft}
         />
         <Rect
-          x={x(item.label) + 7}
-          y={y(item.value.spending) * -1}
+          x={x(item.lastTransactionDate) + 7}
+          y={y(Spending.total) * -1}
           rx={2.5}
           width={graphBarWidth}
-          height={y(item.value.spending)}
+          height={y(Spending.total)}
           fill={barColors.barRight}
         />
       </G>
@@ -243,11 +233,12 @@ export default class JenChart extends PureComponent {
       fill: '#00a4de',
       ...this.props.circleStyle
     };
+    const Net = _selectObject(item.pfmTypes, 'name', 'Net');
 
     return (
       <Circle
-        cx={x(item.label) + 5}
-        cy={y(item.value.nett) * -1}
+        cx={x(item.lastTransactionDate) + 5}
+        cy={y(Net.total) * -1}
         {...circleStyles}
       />
     );
@@ -260,13 +251,15 @@ export default class JenChart extends PureComponent {
       strokeWidth: 3,
       ...lineStyleFromProp
     };
+    const y1 = _selectObject(array[index].pfmTypes, 'name', 'Net');
+    const y2 = _selectObject(array[index + 1].pfmTypes, 'name', 'Net');
 
     return (
       <Line
-        x1={x(array[index].label) + 5}
-        y1={y(array[index].value.nett) * -1}
-        x2={x(array[index + 1].label) + 5}
-        y2={y(array[index + 1].value.nett) * -1}
+        x1={x(array[index].lastTransactionDate) + 5}
+        y1={y(y1.total) * -1}
+        x2={x(array[index + 1].lastTransactionDate) + 5}
+        y2={y(y2.total) * -1}
         {...lineStyles}
       />
     );
@@ -274,9 +267,12 @@ export default class JenChart extends PureComponent {
 
   _getMaxValue = data =>
     d3.max(data, d => {
+      const Income = _selectObject(d.pfmTypes, 'name', 'Income');
+      const Net = _selectObject(d.pfmTypes, 'name', 'Net');
+      const Spending = _selectObject(d.pfmTypes, 'name', 'Spending');
       const maxOne =
-        d.value.income > d.value.spending ? d.value.income : d.value.spending;
-      const maxTwo = maxOne > d.value.nett ? maxOne : d.value.nett;
+        Income.total > Spending.total ? Income.total : Spending.total;
+      const maxTwo = maxOne > Net.total ? maxOne : Net.total;
 
       return maxTwo;
     });
@@ -303,9 +299,9 @@ export default class JenChart extends PureComponent {
 
     return (
       <Rect
-        x={x(item.label) - graphBarWidth / 2}
+        x={x(item.lastTransactionDate) - graphBarWidth / 2}
         y={graphHeight * -1}
-        width={x(item.label) - graphBarWidth / 2}
+        width={x(item.lastTransactionDate) - graphBarWidth / 2}
         height={graphHeight + graphMarginVertical}
         fill='transparent'
         opacity='0.5'
@@ -339,7 +335,7 @@ export default class JenChart extends PureComponent {
     const graphWidth = svgStyles.width;
 
     // X scale point
-    const xDomain = data.map(item => item.label);
+    const xDomain = data.map(item => item.lastTransactionDate);
     const xRange = [0, graphWidth];
     const x = d3
       .scalePoint()
@@ -348,7 +344,7 @@ export default class JenChart extends PureComponent {
       .padding(1);
 
     // Y scale linear
-    const topValue = Math.ceil(this._getMaxValue(data));
+    const topValue = this._getMaxValue(data);
     const yDomain = [0, topValue];
     const yRange = [0, graphHeight];
     const y = d3
@@ -387,7 +383,7 @@ export default class JenChart extends PureComponent {
         </G>
 
         {data.map(item => (
-          <G y={graphHeight + graphMarginVertical} key={'bar' + item.label}>
+          <G y={graphHeight + graphMarginVertical} key={'bar' + item.lastTransactionDate}>
             {this._drawBars(item, graphBarWidth, x, y)}
             {this._drawCircle(item, x, y)}
           </G>
@@ -398,7 +394,7 @@ export default class JenChart extends PureComponent {
             index < array.length - 1 && (
               <G
                 y={graphHeight + graphMarginVertical}
-                key={'line' + item.label}
+                key={'line' + item.lastTransactionDate}
               >
                 {this._drawLine(x, y, index, array)}
               </G>
@@ -409,7 +405,7 @@ export default class JenChart extends PureComponent {
           platform === 'web' ? (
             <Svg
               y={graphHeight + graphMarginVertical}
-              key={'rectOnPress' + item.label}
+              key={'rectOnPress' + item.lastTransactionDate}
               onClick={() => this._rectOnPress(index, item)}
               style={{ overflow: 'initial' }}
             >
@@ -426,7 +422,7 @@ export default class JenChart extends PureComponent {
           ) : (
             <G
               y={graphHeight + graphMarginVertical}
-              key={'rectOnPress' + item.label}
+              key={'rectOnPress' + item.lastTransactionDate}
             >
               {this._drawRectOnPress(
                 index,
@@ -466,7 +462,9 @@ JenChart.defaultProps = {
   labelBottomPosition: 25,
   lineStyle: {},
   graphMarginVertical: 40,
+  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   onPress: () => {},
+  reverseData: false,
   svgStyles: {},
   trianglePosition: 0,
   triangleScale: 10
@@ -494,7 +492,9 @@ JenChart.propTypes = {
   labelBottomStyle: PropTypes.object,
   labelBottomPosition: PropTypes.number,
   lineStyle: PropTypes.object,
+  months: PropTypes.array,
   onPress: PropTypes.func,
+  reverseData: PropTypes.bool,
   svgStyles: PropTypes.object,
   trianglePosition: PropTypes.number,
   triangleScale: PropTypes.number
