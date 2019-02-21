@@ -10,20 +10,20 @@ https://expo.io/@tyobaskara/chartExpo
 
 Web :
 
-- npm i jenchart d3 svgs prop-types
+- npm i jenchart d3 prop-types
 
 React Native without expo:
 
 - react-native init myProject
 - cd myProject
-- npm i jenchart react-native-svg d3 svgs prop-types
+- npm i jenchart react-native-svg d3 prop-types
 - react-native link
 
 React Native with expo:
 
 - expo init myProject
 - cd myProject
-- npm i jenchart d3 svgs prop-types && yarn add expo
+- npm i jenchart d3 prop-types && yarn add expo
 
 ## Babel 6 Support
 
