@@ -6,12 +6,14 @@ const _toFixed = (number, round) => {
 };
 
 const _formatAxisLabel = value => {
-  if (value.toString().length > 9) {
-    return _toFixed(value / 1000000000, 2) + 'B';
-  } else if (value.toString().length > 6) {
-    return _toFixed(value / 1000000, 2) + 'M';
+  const val = value.toString().split('.')[0];
+
+  if (val.length > 9) {
+    return _toFixed(val / 1000000000, 2) + 'B';
+  } else if (val.length > 6) {
+    return _toFixed(val / 1000000, 2) + 'M';
   } else {
-    return _toFixed(value / 1000, 2) + 'K';
+    return _toFixed(val / 1000, 2) + 'K';
   }
 };
 
