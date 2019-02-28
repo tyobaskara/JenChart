@@ -1,3 +1,8 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { Svg, G, Line, Rect, Text, Circle, Image } from 'svgs';
+import * as d3 from 'd3';
+
 export default class JenChart extends PureComponent {
   constructor(props) {
     super(props);

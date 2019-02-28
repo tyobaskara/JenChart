@@ -1,6 +1,6 @@
 {
   "name": "jenchart",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "JenChart react-native react-native-svg svgs react SVG Chart",
   "main": "dist/index.js",
   "scripts": {
