@@ -31,7 +31,7 @@ React Native with expo:
 
 ```
 <Jenchart
-  isBabelSix
+  fixTriangle
  />
 ```
 
@@ -370,7 +370,7 @@ _renderMobJenChart = () => {
           strokeWidth: 2
         }}
         data={data.slice(0, 6)}
-        isBabelSix
+        fixTriangle
         onPress={(index, item) => this._onPress(index, item)}
         platform='mobile'
         svgStyles={{
@@ -520,7 +520,7 @@ JenChart.defaultProps = {
   borderBottomProp: {},
   circleStyle: {},
   data: [],
-  isBabelSix: false,
+  fixTriangle: false,
   graphBarWidth: 12,
   labelTopStyle: {},
   labelTopPosition: 15,
@@ -530,7 +530,6 @@ JenChart.defaultProps = {
   graphMarginVertical: 40,
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   onPress: () => {},
-  reverseData: false,
   svgStyles: {},
   trianglePosition: 0,
   triangleScale: 10
@@ -550,7 +549,7 @@ JenChart.propTypes = {
   borderBottom: PropTypes.bool,
   borderBottomProp: PropTypes.object,
   circleStyle: PropTypes.object,
-  isBabelSix: PropTypes.bool,
+  fixTriangle: PropTypes.bool,
   graphBarWidth: PropTypes.number,
   graphMarginVertical: PropTypes.number,
   labelTopStyle: PropTypes.object,
@@ -560,7 +559,6 @@ JenChart.propTypes = {
   lineStyle: PropTypes.object,
   months: PropTypes.array,
   onPress: PropTypes.func,
-  reverseData: PropTypes.bool,
   svgStyles: PropTypes.object,
   trianglePosition: PropTypes.number,
   triangleScale: PropTypes.number
