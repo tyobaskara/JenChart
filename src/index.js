@@ -1,10 +1,3 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Svg, G, Line, Rect, Text, Circle, Image } from 'svgs';
-import * as d3 from 'd3';
-
-import { _formatAxisLabel, _getMonth, _getYear, _selectObject } from './util';
-
 export default class JenChart extends PureComponent {
   constructor(props) {
     super(props);
@@ -294,16 +287,16 @@ export default class JenChart extends PureComponent {
     const propsOnpress = {};
 
     if (platform !== 'web') {
-      propsOnpress.onPress = () => this._rectOnPress(index, item);
+      propsOnpress.onPressIn = () => this._rectOnPress(index, item);
     }
 
     return (
       <Rect
         x={x(item.lastTransactionDate) - graphBarWidth / 2}
         y={graphHeight * -1}
-        width={x(item.lastTransactionDate) - graphBarWidth / 2}
+        width={graphBarWidth * 2}
         height={graphHeight + graphMarginVertical}
-        fill='transparent'
+        fill='red'
         opacity='0.5'
         {...propsOnpress}
       />
