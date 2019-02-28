@@ -120,7 +120,7 @@ export default class JenChart extends PureComponent {
   _drawBottomLabels = (index, item, x, graphMarginVertical) => {
     const {
       activeColor,
-      isBabelSix,
+      fixTriangle,
       labelTopStyle,
       labelBottomStyle,
       labelBottomPosition,
@@ -151,7 +151,7 @@ export default class JenChart extends PureComponent {
       ...labelActiveStyles
     };
     const triangleSize = triangleScale;
-    const triangleProps = isBabelSix
+    const triangleProps = fixTriangle
       ? {
           x: (x(item.lastTransactionDate) - (triangleSize / 2)) + 5,
           y: ((0 - graphMarginVertical) + triangleSize) - trianglePosition
@@ -454,7 +454,7 @@ JenChart.defaultProps = {
   borderBottomProp: {},
   circleStyle: {},
   data: [],
-  isBabelSix: false,
+  fixTriangle: false,
   graphBarWidth: 12,
   labelTopStyle: {},
   labelTopPosition: 15,
@@ -483,7 +483,7 @@ JenChart.propTypes = {
   borderBottom: PropTypes.bool,
   borderBottomProp: PropTypes.object,
   circleStyle: PropTypes.object,
-  isBabelSix: PropTypes.bool,
+  fixTriangle: PropTypes.bool,
   graphBarWidth: PropTypes.number,
   graphMarginVertical: PropTypes.number,
   labelTopStyle: PropTypes.object,
