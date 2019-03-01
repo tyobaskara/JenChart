@@ -303,14 +303,14 @@ export default class JenChart extends PureComponent {
         y={graphHeight * -1}
         width={graphBarWidth * 2}
         height={graphHeight + graphMarginVertical}
-        fill='red'
+        fill='transparent'
         opacity='0.5'
         {...propsOnpress}
       />
     );
   };
 
-  _activeIndex = index => this.state.activeIndex === index.toString() && true;
+  _activeIndex = index => this.state.activeIndex === index && true;
 
   render() {
     const {
