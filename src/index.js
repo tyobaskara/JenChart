@@ -278,7 +278,7 @@ export default class JenChart extends PureComponent {
     });
 
   _rectOnPress = (index, item) => {
-    this.setState({ activeIndex: index.toString() });
+    this.setState({ activeIndex: index });
     this.props.onPress(index, item);
   };
 
@@ -443,12 +443,12 @@ export default class JenChart extends PureComponent {
 
 JenChart.defaultProps = {
   activeColor: '#00a4de',
-  activeIndex: '0',
+  activeIndex: 0,
   axisColor: '#f5f5f5',
   axisCustom: {},
   axisLabelColor: 'black',
   axisLabelLeftPos: 5,
-  axisLabelSize: '10',
+  axisLabelSize: 10,
   barColor: {},
   borderBottom: false,
   borderBottomProp: {},
@@ -473,12 +473,12 @@ JenChart.propTypes = {
   data: PropTypes.array.isRequired,
   platform: PropTypes.string.isRequired,
   activeColor: PropTypes.string,
-  activeIndex: PropTypes.string,
+  activeIndex: PropTypes.number,
   axisColor: PropTypes.string,
   axisCustom: PropTypes.object,
   axisLabelColor: PropTypes.string,
   axisLabelLeftPos: PropTypes.number,
-  axisLabelSize: PropTypes.string,
+  axisLabelSize: PropTypes.number,
   barColor: PropTypes.object,
   borderBottom: PropTypes.bool,
   borderBottomProp: PropTypes.object,

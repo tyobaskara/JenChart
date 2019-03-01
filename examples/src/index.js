@@ -48,8 +48,8 @@ export default class App extends PureComponent {
                 width: this.state.jenchartWidth,
                 height: 300
               }}
-              activeIndex='1'
-              axisLabelSize={this._detectmob() ? '11' : '14'}
+              activeIndex={1}
+              axisLabelSize={this._detectmob() ? 11 : 14}
               axisLabelLeftPos={10}
               axisCustom={{
                 strokeDasharray: [0, 0],
@@ -85,10 +85,10 @@ export default class App extends PureComponent {
           {this.state.jeenchartWidth && (
             <JenChart
               activeColor='green'
-              activeIndex='0'
+              activeIndex={0}
               axisColor='lightblue'
               axisLabelColor='brown'
-              axisLabelSize='15'
+              axisLabelSize={15}
               barColor={{ barLeft: 'green', barRight: 'blue' }}
               circleStyle={{
                 r: '5',
