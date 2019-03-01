@@ -260,7 +260,7 @@ export default class App extends PureComponent {
                 height: 300
               }}
               activeIndex='1'
-              axisLabelSize={this._detectmob() ? '11' : '14'}
+              axisLabelSize={this._detectmob() ? 11 : 14}
               axisLabelLeftPos={10}
               axisCustom={{
                 strokeDasharray: [0, 0],
@@ -299,7 +299,7 @@ export default class App extends PureComponent {
               activeIndex='0'
               axisColor='lightblue'
               axisLabelColor='brown'
-              axisLabelSize='15'
+              axisLabelSize={15}
               barColor={{ barLeft: 'green', barRight: 'blue' }}
               circleStyle={{
                 r: '5',
@@ -444,7 +444,7 @@ export default class Chart extends PureComponent {
             activeIndex='0'
             axisColor='lightblue'
             axisLabelColor='brown'
-            axisLabelSize='12'
+            axisLabelSize={12}
             barColor={{ barLeft: 'green', barRight: 'blue' }}
             circleStyle={{
               r: '5',
